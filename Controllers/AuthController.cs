@@ -1,7 +1,8 @@
 using eShop_backend.Models;
 using eShop_backend.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 namespace eShop_backend.Controllers{
 
     [ApiController]
@@ -14,8 +15,14 @@ namespace eShop_backend.Controllers{
             _productsService = productsService;
         }
         
-       [HttpPost("register")]
-       public User register([FromForm]User user){
+       //[HttpPost("register")] [FromForm]User user
+       [HttpGet("register")]
+       public User register(){
+           User user = new User(){
+               username = "sebi",
+               password = "sebi",
+               role = "user"
+           };
            return _productsService.addUser(user);
        }
        [HttpPost("login")]

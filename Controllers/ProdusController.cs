@@ -6,7 +6,8 @@ using eShop_backend.Models;
 using eShop_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 namespace eShop_backend.Controllers
 {
     [ApiController]
@@ -28,6 +29,10 @@ namespace eShop_backend.Controllers
                 pret = 479
             };
             return _productsService.addProduct(product);
+        }
+        [HttpGet("getCart")]
+        public Cart getCart([FromQuery] string userId){
+            return _productsService.getCart(userId);
         }
     }
 }
