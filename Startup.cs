@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShop_backend.Models;
+using eShop_backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace eShop_backend
 {
@@ -25,6 +28,21 @@ namespace eShop_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<DatabaseSettings>(
+                Configuration.GetSection(nameof(DatabaseSettings)));
+
+            services.AddSingleton<IDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddSingleton<ProductsService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "myCors",
+                                builder =>
+                                {
+                                    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                                });
+            });
+
             services.AddControllers();
         }
 
@@ -36,9 +54,11 @@ namespace eShop_backend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("myCors");
 
             app.UseAuthorization();
 

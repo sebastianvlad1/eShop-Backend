@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShop_backend.Models;
+using eShop_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,15 +13,21 @@ namespace eShop_backend.Controllers
     [Route("/api/[controller]")]
     public class ProdusController : ControllerBase
     {
-
-        public ProdusController()
+        private readonly ProductsService _productsService;
+        public ProdusController(ProductsService productsService)
         {
+            _productsService = productsService;
         }
 
-        [HttpGet("test")]
-        public String Get()
+        [HttpGet("addproduct")]
+        public Product addProduct()
         {
-            return "Merge";
+            Product product = new Product(){
+                productDescription = "descriere",
+                productName = "TV1",
+                pret = 479
+            };
+            return _productsService.addProduct(product);
         }
     }
 }
