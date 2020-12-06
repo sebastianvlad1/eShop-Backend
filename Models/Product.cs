@@ -8,6 +8,8 @@ namespace eShop_backend.Models{
         public string id { get; set; }
         public string productName { get; set; }
         public string productDescription {get; set;}
+        public string category { get; set; }
+        public bool onsale { get; set; }
         public float pret {get; set;}
     
     }

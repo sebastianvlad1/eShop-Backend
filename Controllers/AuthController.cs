@@ -3,6 +3,7 @@ using eShop_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 namespace eShop_backend.Controllers{
 
     [ApiController]
@@ -15,24 +16,29 @@ namespace eShop_backend.Controllers{
             _productsService = productsService;
         }
         
-       //[HttpPost("register")] [FromForm]User user
-       [HttpGet("register")]
-       public User register(){
+       [HttpPost("register")]
+       public User register([FromForm] User registeredUser){
            User user = new User(){
-               username = "sebi",
-               password = "sebi",
+               username = registeredUser.username,
+               password = registeredUser.password,
+               email = registeredUser.email,
                role = "user"
            };
            return _productsService.addUser(user);
        }
        [HttpPost("login")]
-        public ActionResult Login([FromForm] User user){
-           var res =  _productsService.login(user);
+        public ActionResult Login([FromForm] User loginUser){
+           var res =  _productsService.login(loginUser);
            if(res == null){
                return BadRequest("Login failed");
            }else{
-                return Ok();
+                return Ok(res);
            }
+        }
+        [HttpPost("getuser")]
+        public IActionResult getUser([FromBody] string userId){
+            Console.WriteLine("Caut user cu id: " + userId);
+            return Ok(_productsService.getUser(userId));
         }
     }
 }
