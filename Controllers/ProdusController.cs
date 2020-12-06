@@ -63,5 +63,18 @@ namespace eShop_backend.Controllers
             Console.WriteLine("CONTROLLER. search: " + search + ", category: " + category);
             return Ok(_productsService.getProductsByCategory(search, category));
         }
+        [HttpPost("cleanCart")]
+        public IActionResult cleanCart([FromBody] string userId){
+            Cart cart = _productsService.getSimpleCart(userId);
+            cart.cartItems = new List<CartItem>();
+            _productsService.editCart(cart);
+            return Ok();
+        }
+        [HttpPost("creeazaComanda")]
+        public IActionResult creeazaComanda([FromBody] Comanda comanda){
+            Console.WriteLine("CREEZ COMANDA");
+            comanda.data = DateTime.Now;
+            return Ok(_productsService.creeazaComanda(comanda));
+        }
     }
 }

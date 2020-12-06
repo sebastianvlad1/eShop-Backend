@@ -10,12 +10,14 @@ namespace eShop_backend.Services{
         private readonly IMongoCollection<Product> _products;
         private readonly IMongoCollection<User> _users;
         private readonly IMongoCollection<Cart> _carts;
+        private readonly IMongoCollection<Comanda> _comenzi;
         public ProductsService(IDatabaseSettings settings){
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
             _products = database.GetCollection<Product>(settings.ProductsCollectionName);
             _users = database.GetCollection<User>(settings.UsersCollectionName);
             _carts = database.GetCollection<Cart>(settings.CartsCollectionName);
+            _comenzi = database.GetCollection<Comanda>(settings.ComenziCollectionName);
         }
 
         public Product addProduct(Product product){
@@ -38,6 +40,9 @@ namespace eShop_backend.Services{
         public class CartItemsShow{
             public Product product { get; set;}
             public int number { get; set;}
+        }
+        public Cart getSimpleCart(string userId){
+            return _carts.Find(x => x.ownerId.Equals(userId)).Limit(1).SingleOrDefault();
         }
         public List<CartItemsShow> getCart(string userId){
             Cart cart =  _carts.Find(x => x.ownerId.Equals(userId)).Limit(1).SingleOrDefault();
@@ -92,6 +97,15 @@ namespace eShop_backend.Services{
                 var filter = Builders<Cart>.Filter.Eq("_id", new ObjectId(cart.id));
                 var update = Builders<Cart>.Update.Set("cartItems", cart.cartItems);
                 _carts.UpdateOne(filter,update);
+        }
+        public void editCart(Cart cart){
+            var filter = Builders<Cart>.Filter.Eq("_id", new ObjectId(cart.id));
+            var update = Builders<Cart>.Update.Set("cartItems", cart.cartItems);
+            _carts.UpdateOne(filter,update);
+        }
+        public Comanda creeazaComanda(Comanda comanda){
+            _comenzi.InsertOne(comanda);
+            return comanda;
         }
         public void deleteCartItem(string userId, string productId){
             Cart cart = _carts.Find(c => c.ownerId == userId).Limit(1).FirstOrDefault();
