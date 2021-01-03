@@ -24,11 +24,11 @@ namespace eShop_backend.Controllers
         public Product addProduct()
         {
             Product product = new Product(){
-                productDescription = "PlayStation 4 Slim 500GB",
-                productName = "PlayStation 4",
-                pret = 899,
-                category = "Gaming",
-                onsale = true
+                productDescription = "Lenovo Legion y520 laptop de gaming i5-7800HQ, GTX 1060 4gb, 16gb ram",
+                productName = "Lenovo Legionr",
+                pret = 3999,
+                category = "Laptopuri",
+                onsale = false
             };
             return _productsService.addProduct(product);
         }

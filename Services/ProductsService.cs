@@ -45,7 +45,7 @@ namespace eShop_backend.Services{
             return _carts.Find(x => x.ownerId.Equals(userId)).Limit(1).SingleOrDefault();
         }
         public List<Comanda> getUserOrders(string userId){
-            return _comenzi.Find(c => c.ownerId.Equals(userId)).Limit(50).ToList();
+            return _comenzi.Find(c => c.ownerId.Equals(userId)).SortByDescending(c => c.id).Limit(50).ToList();
         }
         public List<CartItemsShow> getCart(string userId){
             Cart cart =  _carts.Find(x => x.ownerId.Equals(userId)).Limit(1).SingleOrDefault();
