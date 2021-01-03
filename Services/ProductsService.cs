@@ -44,6 +44,9 @@ namespace eShop_backend.Services{
         public Cart getSimpleCart(string userId){
             return _carts.Find(x => x.ownerId.Equals(userId)).Limit(1).SingleOrDefault();
         }
+        public List<Comanda> getUserOrders(string userId){
+            return _comenzi.Find(c => c.ownerId.Equals(userId)).Limit(50).ToList();
+        }
         public List<CartItemsShow> getCart(string userId){
             Cart cart =  _carts.Find(x => x.ownerId.Equals(userId)).Limit(1).SingleOrDefault();
             List<CartItemsShow> cartItemsShows = new List<CartItemsShow>();
@@ -114,6 +117,9 @@ namespace eShop_backend.Services{
             var filter = Builders<Cart>.Filter.Eq("_id", new ObjectId(cart.id));
             var update = Builders<Cart>.Update.Set("cartItems", cart.cartItems);
             _carts.UpdateOne(filter,update);
+        }
+        public Comanda getOrderDetails(string orderId){
+            return _comenzi.Find(c => c.id.Equals(orderId)).SingleOrDefault();
         }
         
     }

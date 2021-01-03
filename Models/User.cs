@@ -10,5 +10,10 @@ namespace eShop_backend.Models{
         public string password {get; set;}
         public string email { get; set;}
         public string role {get; set;}
+        public string adresa { get; set;}
+        public string codPostal { get; set;}
+        public string tara { get; set; }
+        public string judet  { get; set; }
+        public string oras { get; set; }
     }
 }

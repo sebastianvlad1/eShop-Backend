@@ -22,7 +22,12 @@ namespace eShop_backend.Controllers{
                username = registeredUser.username,
                password = registeredUser.password,
                email = registeredUser.email,
-               role = "user"
+               role = "user",
+               adresa = registeredUser.adresa,
+               codPostal = registeredUser.codPostal,
+               tara = registeredUser.tara,
+               judet = registeredUser.judet,
+               oras = registeredUser.oras
            };
            return _productsService.addUser(user);
        }

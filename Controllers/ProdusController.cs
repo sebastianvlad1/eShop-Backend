@@ -24,11 +24,11 @@ namespace eShop_backend.Controllers
         public Product addProduct()
         {
             Product product = new Product(){
-                productDescription = "Descriere laptop",
-                productName = "ASUS ROG 90X",
-                pret = 5500,
-                category = "Laptop",
-                onsale = false
+                productDescription = "PlayStation 4 Slim 500GB",
+                productName = "PlayStation 4",
+                pret = 899,
+                category = "Gaming",
+                onsale = true
             };
             return _productsService.addProduct(product);
         }
@@ -75,6 +75,14 @@ namespace eShop_backend.Controllers
             Console.WriteLine("CREEZ COMANDA");
             comanda.data = DateTime.Now;
             return Ok(_productsService.creeazaComanda(comanda));
+        }
+        [HttpGet("getUserOrders")]
+        public IActionResult getUserOrders([FromQuery] string userId){
+            return Ok(_productsService.getUserOrders(userId));
+        }
+        [HttpGet("getOrderDetails")]
+        public IActionResult getOrderDetails([FromQuery] string orderId){
+            return Ok(_productsService.getOrderDetails(orderId));
         }
     }
 }
