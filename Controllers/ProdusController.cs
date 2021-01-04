@@ -42,25 +42,21 @@ namespace eShop_backend.Controllers
         }
         [HttpPost("addtocart")]
         public ActionResult addToCart([FromBody] AddObj obj){
-            Console.WriteLine("Am primit productid: " + obj.productId + " pt user: " + obj.userId);
             _productsService.addToCart(obj.productId, obj.userId);
             return Ok();
         }
         [HttpPost("getcart")]
         public ActionResult getCart([FromBody] string userId){
-            Console.WriteLine("Caut cart pt user: " + userId);
             return Ok(_productsService.getCart(userId));
         }
         [HttpPost("detelecartitem")]
         public IActionResult deteleCartItem([FromBody] AddObj obj){
-            Console.WriteLine("Sterge produsul " + obj.productId + " de la userul " + obj.userId);
             _productsService.deleteCartItem(obj.userId, obj.productId);
             return Ok();
         }
         [HttpGet("getproducts")]
         public IActionResult getProducts([FromQuery] string search, string category)
         {
-            Console.WriteLine("CONTROLLER. search: " + search + ", category: " + category);
             return Ok(_productsService.getProductsByCategory(search, category));
         }
         [HttpPost("cleanCart")]
@@ -72,7 +68,6 @@ namespace eShop_backend.Controllers
         }
         [HttpPost("creeazaComanda")]
         public IActionResult creeazaComanda([FromBody] Comanda comanda){
-            Console.WriteLine("CREEZ COMANDA");
             comanda.data = DateTime.Now;
             return Ok(_productsService.creeazaComanda(comanda));
         }
@@ -83,6 +78,10 @@ namespace eShop_backend.Controllers
         [HttpGet("getOrderDetails")]
         public IActionResult getOrderDetails([FromQuery] string orderId){
             return Ok(_productsService.getOrderDetails(orderId));
+        }
+        [HttpGet("getProductById")]
+        public IActionResult getProductById([FromQuery] string productId){
+            return Ok(_productsService.getProductById(productId));
         }
     }
 }

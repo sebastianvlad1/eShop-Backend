@@ -67,9 +67,7 @@ namespace eShop_backend.Services{
             return _products.Find(_ => true).ToList();
         }
         public List<Product> getProductsByCategory(string search, string category){
-            Console.WriteLine("SERVICE. search: " + search + ", category: " + category);
             if(category == null && search == null){
-                Console.WriteLine("Ambele sunt null");
                 return _products.Find(p => p.productName.ToLower().Contains("")).Limit(15).ToList(); 
             }else if(category == null){
                 return _products.Find(p => p.productName.ToLower().Contains(search)).Limit(15).ToList();
@@ -82,15 +80,12 @@ namespace eShop_backend.Services{
         }
         public void addToCart(string productId, string userId){
             Cart cart = _carts.Find(c => c.ownerId == userId).Limit(1).FirstOrDefault();
-            Console.WriteLine("Cart: " + cart.id);
             CartItem cartItem = cart.cartItems.Find(i => i.productId == productId);
             if(cartItem != null){
-                Console.WriteLine("Am gasit cart: " + cartItem.productId);
                 int index = cart.cartItems.IndexOf(cartItem);
                 cart.cartItems[index].number = cart.cartItems[index].number + 1;
 
             }else{
-                Console.WriteLine("Trebuie sa-l adaugam");
                 CartItem item = new CartItem(){
                     productId = productId,
                     number = 1
@@ -121,6 +116,8 @@ namespace eShop_backend.Services{
         public Comanda getOrderDetails(string orderId){
             return _comenzi.Find(c => c.id.Equals(orderId)).SingleOrDefault();
         }
-        
+        public Product getProductById(string productId){
+            return _products.Find(c => c.id.Equals(productId)).SingleOrDefault();
+        }
     }
 }
